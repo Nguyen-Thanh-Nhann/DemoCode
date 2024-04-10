@@ -5,13 +5,13 @@ const HeaderComponent = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={4}>
-        <div>xs=8</div>
+        <div>Item 1</div>
       </Grid>
       <Grid item xs={4}>
-        <div>xs=4</div>
+        <div>Item 2</div>
       </Grid>
       <Grid item xs={4}>
-        <div>xs=4</div>
+        <div>Item 3</div>
       </Grid>
     </Grid>
   );
