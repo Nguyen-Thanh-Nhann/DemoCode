@@ -17,7 +17,7 @@ const HeaderComponent = () => {
         <Col span={12}>
           <div>
             <ButtonInputSearch
-              placeholder="input search text"
+              placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
               textButton="Tìm Kiếm"
               //onSearch={onSearch}
             />
