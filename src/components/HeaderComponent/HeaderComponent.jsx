@@ -1,5 +1,5 @@
 import React from "react";
-import Grid from "@mui/material/Grid";
+import { Button, Col } from 'antd'
 import { WrapperHeader, WrapperTextHeader, WrapperHeaderAccount, Span } from "./style";
 import Search from "antd/lib/transfer/search";
 import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
@@ -8,13 +8,13 @@ import { UserOutlined, CaretDownOutlined, ShoppingCartOutlined } from "@ant-desi
 const HeaderComponent = () => {
   return (
     <WrapperHeader gutter = {16}>
-      <Grid container spacing={2}>
-        <Grid item xs={3}>
+   
+        <Col span={6}>
           <div>
             <WrapperTextHeader>NHANTAIDEPTRAI</WrapperTextHeader>
           </div>
-        </Grid>
-        <Grid item xs={6}>
+        </Col>
+        <Col span={12}>
           <div>
             <ButtonInputSearch
               placeholder="input search text"
@@ -22,8 +22,8 @@ const HeaderComponent = () => {
               //onSearch={onSearch}
             />
           </div>
-        </Grid>
-        <Grid item xs={3} style={{display:'flex' , gap:'20px'}}>
+        </Col>
+        <Col span={6} style={{display:'flex' , gap:'20px', alignItems:'center'}}>
           <WrapperHeaderAccount>
             <UserOutlined style={{fontSize:'30px'}}/>
             <div>
@@ -38,8 +38,8 @@ const HeaderComponent = () => {
             <ShoppingCartOutlined style={{fontSize:'30px', color:'#fff',}}/>
             <Span>Giỏ Hàng</Span>
           </div>
-        </Grid>
-      </Grid>
+        </Col>
+     
     </WrapperHeader>
   );
 };
