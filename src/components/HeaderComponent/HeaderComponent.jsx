@@ -35,11 +35,9 @@ const HeaderComponent = () => {
             </div>
           </WrapperHeaderAccount>
           <div>
-            <ShoppingCartOutlined style={{fontSize:'30px', color:'#fff',}}/>
-            <Span>Giỏ Hàng</Span>
+            <ShoppingCartOutlined style={{fontSize:'40px', color:'#fff',}}/>
           </div>
         </Col>
-     
     </WrapperHeader>
   );
 };
