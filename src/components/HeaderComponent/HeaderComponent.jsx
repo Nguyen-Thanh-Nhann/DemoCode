@@ -7,7 +7,7 @@ import { UserOutlined, CaretDownOutlined, ShoppingCartOutlined } from "@ant-desi
 
 const HeaderComponent = () => {
   return (
-    <WrapperHeader gutter = {16}>
+    <WrapperHeader gutter = {16} style={{margin :''}}>
    
         <Col span={6}>
           <div>
