@@ -26,7 +26,7 @@ const HeaderComponent = () => {
         <div>
           <ButtonInputSearch
             placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
-            textButton="Tìm Kiếm"
+            textButton=" Tìm Kiếm "
             //onSearch={onSearch}
           />
         </div>
