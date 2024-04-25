@@ -8,6 +8,7 @@ export const WrapperHeader = styled(Row)`
   align-items: center;
   gap: 16px;
   flex-wrap:nowrap;
+  width:100%;
 `;
 
 export const WrapperTextHeader = styled.span`
@@ -16,7 +17,7 @@ export const WrapperTextHeader = styled.span`
   font-weight:bold;
   text-align:left;
 `;
-export const WrapperHeaderAccount = styled.div`
+export const WrapperHeaderAccount = styled.div`     
   display: flex;
   align-items: center;
   color: #fff;

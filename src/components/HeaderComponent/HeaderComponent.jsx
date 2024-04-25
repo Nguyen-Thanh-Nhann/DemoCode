@@ -16,24 +16,23 @@ import {
 
 const HeaderComponent = () => {
   return (
-    <WrapperHeader gutter={16} style={{ margin: "" }}>
-      <Col span={6}>
+    <div style={{ width:'100%', background:'rbg(26, 148, 255)', display:'flex', justifyContent:'center'}}>
+    <WrapperHeader >
+      <Col span={5}>
         <div>
-          <WrapperTextHeader>NHANTAIDEPTRAI</WrapperTextHeader>
+          <WrapperTextHeader style={{paddingRight:'10px'}}>NHANTAIDEPTRAI</WrapperTextHeader>
         </div>
       </Col>
-      <Col span={12}>
-        <div>
+      <Col span={13}>
           <ButtonInputSearch
+            size="large"
+            bordered={false}
             placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
             textButton=" Tìm Kiếm "
             //onSearch={onSearch}
-          />
-        </div>
+          />  
       </Col>
-      <Col
-        span={6}
-        style={{ display: "flex", gap: "20px", alignItems: "center" }}
+      <Col span={6} style={{ display: "flex", gap: "54px", alignItems: "center" }}
       >
         <WrapperHeaderAccount>
           <UserOutlined style={{ fontSize: "30px" }} />
@@ -52,6 +51,7 @@ const HeaderComponent = () => {
         </div>
       </Col>
     </WrapperHeader>
+    </div>
   );
 };
 

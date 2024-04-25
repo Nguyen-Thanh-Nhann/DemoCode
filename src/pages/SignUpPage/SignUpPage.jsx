@@ -7,7 +7,13 @@ import {
 import InputForm from "../../components/InputForm/InputForm";
 import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 import { Image } from "antd";
+import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
+import { useState } from 'react'
+
 const SignUpPage = () => {
+  const [isShowPassword, setIsShowPassword] = useState(false)
+  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false)
+  
   return (
     <div
       style={{
@@ -32,10 +38,44 @@ const SignUpPage = () => {
           <p>Đăng nhập và tạo tài khoản</p>
           <InputForm
             style={{ marginBottom: "10px" }}
-            placeholder="abc@gmail.com"
-          />
-          <InputForm style={{ marginBottom: "10px" }} placeholder="password" />
-          <InputForm placeholder="comfirm password" />
+            placeholder="abc@gmail.com"/>
+            <div style={{ position: 'relative' }}>
+            <span
+              style={{
+                zIndex: 10,
+                position: 'absolute',
+                top: '4px',
+                right: '8px'
+              }}
+            >{
+                isShowConfirmPassword ? (
+                  <EyeFilled />
+                ) : (
+                  <EyeInvisibleFilled />
+                )
+              }
+            </span>
+            <InputForm placeholder="password" style={{marginBottom:'10px'}}/>
+          </div>
+          <div style={{ position: 'relative' }}>
+            <span
+              style={{
+                zIndex: 10,
+                position: 'absolute',
+                top: '4px',
+                right: '8px'
+              }}
+            >{
+                isShowPassword ? (
+                  <EyeFilled />
+                ) : (
+                  <EyeInvisibleFilled />
+                )
+              }
+            </span>
+            <InputForm placeholder="comfirm password" style={{ marginBottom: '10px' }} type={isShowPassword ? "text" : "password"} />
+          </div>
+          
           <ButtonComponent
             bordered={false}
             size={40}
@@ -50,13 +90,7 @@ const SignUpPage = () => {
             textButton={"Đăng nhập"}
             styleTextButton={{ color: "#fff" }}
           ></ButtonComponent>
-          <p>
-            <WrapperTextLight>Quên mật khẩu?</WrapperTextLight>
-          </p>
-          <p>
-            Chưa có tải khoản?{" "}
-            <WrapperTextLight>Tạo tài khoản</WrapperTextLight>
-          </p>
+          <p>Bạn đã có tài khoản? <WrapperTextLight> Đăng nhập</WrapperTextLight></p>
         </WrapperContainerLeft>
         <WrapperContainerRight>
           <Image

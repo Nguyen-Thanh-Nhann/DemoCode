@@ -7,8 +7,11 @@ import {
 import InputForm from "../../components/InputForm/InputForm";
 import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 import { Image } from "antd";
+import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
+import { useState } from 'react'
 
 const SignInPage = () => {
+  const [isShowPassword, setIsShowPassword] = useState(false)
   return (
     <div
       style={{
@@ -33,9 +36,28 @@ const SignInPage = () => {
           <p>Đăng nhập và tạo tài khoản</p>
           <InputForm
             style={{ marginBottom: "10px" }}
-            placeholder="abc@gmail.com"
-          />
-          <InputForm placeholder="password" />
+            placeholder="abc@gmail.com"/>
+            <div style={{ position: 'relative' }}>
+            <span
+              style={{
+                zIndex: 10,
+                position: 'absolute',
+                top: '4px',
+                right: '8px'
+              }}
+            >{
+                isShowPassword ? (
+                  <EyeFilled />
+                ) : (
+                  <EyeInvisibleFilled />
+                )
+              }
+            </span>
+            <InputForm
+              placeholder="password"
+              type={isShowPassword ? "text" : "password"}
+            />
+          </div>
           <ButtonComponent
             bordered={false}
             size={40}
