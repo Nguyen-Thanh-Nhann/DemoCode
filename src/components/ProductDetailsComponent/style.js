@@ -58,7 +58,7 @@ export const WrapperAddressProduct = styled.div`
 `
 
 export const WrapperQualityProduct = styled.div`
-  // display: flex;
+  display: flex;
   gap: 4px;
   align-items: center;
   width: 104px;

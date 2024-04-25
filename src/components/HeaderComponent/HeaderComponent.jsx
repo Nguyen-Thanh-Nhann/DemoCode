@@ -1,12 +1,12 @@
 import React from "react";
-import { Badge, Button, Col } from "antd";
+import { Badge, Col } from "antd";
 import {
   WrapperHeader,
   WrapperTextHeader,
   WrapperHeaderAccount,
   Span,
 } from "./style";
-import Search from "antd/lib/transfer/search";
+
 import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
 import {
   UserOutlined,
