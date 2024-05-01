@@ -13,8 +13,13 @@ import {
   CaretDownOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const HeaderComponent = () => {
+    const navigate = useNavigate()
+    const handleNavigateLogin = () => {
+      navigate('/sign-in')
+    }
   return (
     <div style={{ width:'100%', background:'rbg(26, 148, 255)', display:'flex', justifyContent:'center'}}>
     <WrapperHeader >
@@ -36,7 +41,7 @@ const HeaderComponent = () => {
       >
         <WrapperHeaderAccount>
           <UserOutlined style={{ fontSize: "30px" }} />
-          <div>
+          <div onClick={handleNavigateLogin} style={{ cursor: 'pointer' }}>
             <Span>Đăng Nhập/Đăng kí</Span>
             <div>
               <Span>Tài Khoản</Span>
