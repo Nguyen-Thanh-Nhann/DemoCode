@@ -30,7 +30,7 @@ const SignInPage = () => {
   const { data, isPending, isSuccess } = mutation
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && data?.message === 'SUCCESS') {
       if(location?.state) {
         navigate(location?.state)
       }else {

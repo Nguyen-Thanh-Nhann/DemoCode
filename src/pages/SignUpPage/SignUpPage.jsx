@@ -31,7 +31,7 @@ const SignUpPage = () => {
   useEffect(() => {
     if ( isSuccess && data?.message === 'SUCCESS') {
       message.success()
-      navigate("/sign-in");
+      handleNavigateSignIn()
     } else if (isError) {
       message.error()
     }
