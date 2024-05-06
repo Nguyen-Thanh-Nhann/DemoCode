@@ -1,27 +1,68 @@
-import React,  { Fragment }from "react";
+import React, { Fragment, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { routes } from "./routes";
-import { useEffect } from "react";
 import DefaultComponent from "./components/DefaultComponent/DefaultComponent";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { isJsonString } from "./utils";
+import { jwtDecode } from "jwt-decode";
+import * as UserService from "./services/UserService";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser, resetUser } from "./redux/slides/userSlide";
+import Loading from './components/LoadingComponent/Loading'
 
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user)
+  const [isPending, setIsPending] = useState(false)
 
+  useEffect(() => {
+    setIsPending(true)
+    const { storageData, decoded } = handleDecoded()
+    if (decoded?.id) {
+      handleGetDetailsUser(decoded?.id, storageData)
+    }
+    setIsPending(false)
+  }, [])
 
+  const handleDecoded = () => {
+    let storageData = user?.access_token || localStorage.getItem('access_token')
+    let decoded = {}
+    if (storageData && isJsonString(storageData) && !user?.access_token) {
+      storageData = JSON.parse(storageData)
+      decoded = jwtDecode(storageData)
+    }
+    return { decoded, storageData }
+  }  
 
-  // useEffect(() => {
-  //   fetchApi()
-  // }, [])
-  // const fetchApi = async() => {
-  //   const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/get-all`)
-  //   return res.data
-  // }
-  // const query = useQuery({ queryKey: ['todos'], queryFn: fetchApi })
-  //   console.log('query', query)
+  UserService.axiosJWT.interceptors.request.use(async (config) => {
+    // Do something before request is sent
+    const currentTime = new Date()
+    const { decoded } = handleDecoded()
+    let storageRefreshToken = localStorage.getItem('refresh_token')
+    const refreshToken = JSON.parse(storageRefreshToken)
+    const decodedRefreshToken =  jwtDecode(refreshToken)
+    if (decoded?.exp < currentTime.getTime() / 1000) {
+      if(decodedRefreshToken?.exp > currentTime.getTime() / 1000) {
+        const data = await UserService.refreshToken(refreshToken)
+        config.headers['token'] = `Bearer ${data?.access_token}`
+      }else {
+        dispatch(resetUser())
+      }
+    }
+    return config;
+  }, (err) => {
+    return Promise.reject(err)
+  })
+
+  const handleGetDetailsUser = async (id, token) => {
+    let storageRefreshToken = localStorage.getItem('refresh_token')
+    const refreshToken = JSON.parse(storageRefreshToken)
+    const res = await UserService.getDetailsUser(id, token)
+    dispatch(updateUser({ ...res?.data, access_token: token, refreshToken: refreshToken}))
+  }
 
   return (
-    <div>
+    <div style={{height: '100vh', width: '100%'}}>
+     <Loading isPending={isPending}>
       <Router>
         <Routes>
           {routes.map((route) => {
@@ -41,6 +82,7 @@ function App() {
           })}
         </Routes>
       </Router>
+      </Loading>
     </div>
   );
 }

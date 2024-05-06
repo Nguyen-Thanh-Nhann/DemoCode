@@ -110,7 +110,7 @@ const SignUpPage = () => {
             />
           </div>
           {data?.status === 'ERR' && <span style={{ color: 'red' }}>{data?.message}</span>}
-          <Loading isPending={mutation.isPending}>
+          <Loading isPending={isPending}>
             <ButtonComponent
               disabled={!email.length || !password.length || !confirmPassword.length}
               onClick={handleSignUp}
