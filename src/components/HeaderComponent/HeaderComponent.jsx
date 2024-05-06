@@ -12,12 +12,16 @@ import { useDispatch, useSelector } from "react-redux";
 import * as UserService from '../../services/UserService'
 import { resetUser } from "../../redux/slides/userSlide";
 import Loading from "../LoadingComponent/Loading";
+import { useEffect } from 'react';
 
 const HeaderComponent = () => {
     const user = useSelector((state) => state.user)
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [userName, setUserName] = useState('')
+    const [userAvatar, setUserAvatar] = useState('')
     const [loading, setLoading] = useState(false)
+    const [isOpenPopup, setIsOpenPopup] = useState(false)
     const handleNavigateLogin = () => {
       navigate('/sign-in')
     }
@@ -29,10 +33,17 @@ const HeaderComponent = () => {
       localStorage.removeItem('refresh_token')
       setLoading(false)
     }
+    useEffect(() => {
+      setLoading(true)
+      setUserName(user?.name)
+      setUserAvatar(user?.avatar)
+      setLoading(false)
+    }, [user?.name, user?.avatar])
+
     const content = (
       <div>
         <WrapperContentPopup onClick={handleLogout}>Đăng xuất</WrapperContentPopup>
-        <WrapperContentPopup>Thông tin người dùng</WrapperContentPopup>
+        <WrapperContentPopup onClick={() => navigate('/profile-user') }>Thông tin người dùng</WrapperContentPopup>
       </div>
     );
   return (
@@ -55,14 +66,23 @@ const HeaderComponent = () => {
       <Col span={6} style={{ display: "flex", gap: "54px", alignItems: "center" }}>
       <Loading isPending={loading}>
         <WrapperHeaderAccount>
-          <UserOutlined style={{ fontSize: "30px" }} />
-          {user?.name?(
-            <>
-            <Popover content={content} trigger="click">
-            <div style={{ cursor: 'pointer' }} >{user.name}</div>
-            </Popover>
-            </>
-          ): (
+              {userAvatar ? (
+                <img src={userAvatar} alt="avatar" style={{
+                  height: '30px',
+                  width: '30px',
+                  borderRadius: '50%',
+                  objectFit: 'cover'
+                }} />
+              ) : (
+                <UserOutlined style={{ fontSize: '30px' }} />
+              )}
+              {user?.access_token ? (
+                <>
+                  <Popover content={content} trigger="click" open={isOpenPopup}>
+                    <div style={{ cursor: 'pointer',maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis' }} onClick={() => setIsOpenPopup((prev) => !prev)}>{userName?.length ? userName : user?.email}</div>
+                  </Popover>
+                </>
+              ) : (
           <div onClick={handleNavigateLogin} style={{ cursor: 'pointer' }}>
             <Span>Đăng Nhập/Đăng kí</Span>
             <div>
