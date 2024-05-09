@@ -1,55 +1,53 @@
-import React from "react";
-import {
-  StyleNameProduct,
-  WrapperReportText,
-  WrapperPriceText,
-  WrapperDiscountText,
-  WrapperCardStyle,
-} from "./style";
-import { StarFilled } from "@ant-design/icons";
-import logo from "../../assets/images/logo.png";
-import { WrapperStyleTextSell } from "../ProductDetailsComponent/style";
+import React from 'react'
+import { StyleNameProduct, WrapperCardStyle, WrapperDiscountText, WrapperPriceText, WrapperReportText, WrapperStyleTextSell } from './style'
+import { StarFilled } from '@ant-design/icons'
+import logo from '../../assets/images/logo.png'
+import { useNavigate } from 'react-router-dom'
+//import { convertPrice } from '../../utils'
 
-const CardComponent = () => {
-  return (
-    <div className="WrapperCardStyle_container">
-      <WrapperCardStyle
-        hoverable
-        cover={
-          <img
-            alt="example"
-            src="https://salt.tikicdn.com/cache/280x280/ts/product/a1/cd/ce/84a16c41ac07ce50d754e44a16ecbd1c.jpg.webp"
-          />
-        }
-      >
-        <img
-          src={logo}
-          style={{
-            width: "68px",
-            height: "14px",
-            position: "absolute",
-            top: -1,
-            left: -1,
-            borderTopLeftRadius: "3px",
-          }}
-        />
-        <StyleNameProduct>Iphone</StyleNameProduct>
-        <WrapperReportText>
-          <span style={{ marginRight: "4px" }}>
-            <span>4.96 </span>
-            <StarFilled style={{ fontSize: "12px", color: 'rgb(253, 216, 54)' }} />
-          </span>
-          <WrapperStyleTextSell> | Đã bán 1000+ </WrapperStyleTextSell>
-        </WrapperReportText>
-        <WrapperPriceText>
-          <span style={{marginRight:'8px'}}>19.000.000đ</span>
-          <WrapperDiscountText>
-            -5%
-          </WrapperDiscountText>
-        </WrapperPriceText>
-      </WrapperCardStyle>
-    </div>
-  );
-};
+const CardComponent = (props) => {
+    const { countInStock, description, image, name, price, rating, type, discount, selled, id } = props
+    const navigate = useNavigate()
+    const handleDetailsProduct = (id) => {
+        navigate(`/product-details/${id}`)
+    }
+    return (
+        <WrapperCardStyle
+            hoverable
+            headStyle={{ width: '200px', height: '200px' }}
+            style={{ width: 200 }}
+            bodyStyle={{ padding: '10px' }}
+            cover={<img alt="example" src="https://salt.tikicdn.com/cache/750x750/ts/product/b7/ba/88/66059a54a3a139d45841d412379b1fe4.jpg.webp" />}
+            onClick={() =>  handleDetailsProduct(id)}
+        >
+            <img
+                src={logo}
+                style={{
+                    width: '68px',
+                    height: '14px',
+                    position: 'absolute',
+                    top: -1,
+                    left: -1,
+                    borderTopLeftRadius: '3px'
+                }}
+            />
+            <StyleNameProduct>{name}</StyleNameProduct>
+            <WrapperReportText>
+                <span style={{ marginRight: '4px' }}>
+                    <span>{rating} </span> <StarFilled style={{ fontSize: '12px', color: 'rgb(253, 216, 54)' }} />
+                </span>
+                <WrapperStyleTextSell> | Da ban {selled || 1000}+</WrapperStyleTextSell>
+            </WrapperReportText>
+            <WrapperPriceText>
+                <span style={{ marginRight: '8px' }}>
+                    {price}
+                    </span>
+                <WrapperDiscountText>
+                    - {discount || 5} %
+                </WrapperDiscountText>
+            </WrapperPriceText>
+        </WrapperCardStyle>
+    )
+}
 
-export default CardComponent;
+export default CardComponent

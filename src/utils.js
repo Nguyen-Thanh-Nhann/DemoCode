@@ -17,15 +17,15 @@ export const getBase64 = (file) =>
         reader.onerror = (error) => reject(error);
     });
 
-// export function getItem(label, key, icon, children, type) {
-//     return {
-//         key,
-//         icon,
-//         children,
-//         label,
-//         type,
-//     };
-// }
+export function getItem(label, key, icon, children, type) {
+    return {
+        key,
+        icon,
+        children,
+        label,
+        type,
+    };
+}
 
 // export const renderOptions = (arr) => {
 //     let results = []
