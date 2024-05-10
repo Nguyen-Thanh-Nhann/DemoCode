@@ -22,7 +22,6 @@ const HomePage = () => {
 
   }
   const { isLoading, data: products } = useQuery({ queryKey: 'product', queryFn: fetchProductAll , retry: 3, retryDelay: 1000});
-  console.log('data', products)
   
   return (
     <>
