@@ -14,12 +14,14 @@ import { useQuery } from "@tanstack/react-query";
 import DrawerComponent from "../DrawerComponent/DrawerComponent";
 import { useSelector } from "react-redux";
 import { render } from "@testing-library/react";
+import ModalComponent from "../ModalComponent/ModalComponent";
 
 const AdminProduct = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isOpenDrawer, setIsOpenDrawer] = useState(false)
   const [rowSelected, setRowSelected] = useState('')
   const [isPendingUpdate, setIsPendingUpdate]  = useState(false)
+  const [isModalOpenDelete, setIsModalOpenDelete] = useState(false)
   const user = useSelector((state) => state?.user)
   const [stateProduct, setStateProduct] = useState({
     name: '',
@@ -68,7 +70,6 @@ const AdminProduct = () => {
   })
   const mutationUpdate = useMutationHooks(
     (data) => {
-      console.log('data', data)
     const {
       id,
       token,
@@ -76,10 +77,21 @@ const AdminProduct = () => {
     const res = ProductService.updateProduct(
       id,
       token,
-      rest
+      {...rest}
     )
     return res
   })
+  const mutationDeleted = useMutationHooks(
+    (data) => {
+      const { id,
+        token,
+      } = data
+      const res = ProductService.deleteProduct(
+        id,
+        token)
+      return res
+    },
+  )
 
   const getAllProducts = async () => {
     const res = await ProductService.getAllProduct();
@@ -113,15 +125,11 @@ const AdminProduct = () => {
     }
   }, [rowSelected, isOpenDrawer])
 
-  
-
   useEffect(() => {
     if (rowSelected ) {
       fetchGetDetailsProduct(rowSelected)
     }
   }, [rowSelected])
-
-  console.log('StateProducts', stateProductDetails)
 
   const handleDetailsProduct = () => {
     setIsOpenDrawer(true)
@@ -129,15 +137,14 @@ const AdminProduct = () => {
 
   const { data, isPending, isSuccess, isError } = mutation
   const { data: dataUpdated, isPending: isPendingUpdated, isSuccess: isSuccessUpdated, isError: isErrorUpdated } = mutationUpdate
+  const { data: dataDeleted, isLoading: isPendingDeleted, isSuccess: isSuccessDeleted, isError: isErrorDeleted } = mutationDeleted
   console.log('dataUpdated', dataUpdated)
-  const { data: products, isPending: isPendingProduct } = useQuery({
-    queryKey: ["products"],
-    queryFn: getAllProducts,
-  });
+  const queryProduct = useQuery({ queryKey: ['products'], queryFn: getAllProducts })
+  const { data: products, isPending: isPendingProducts } = queryProduct
   const renderAction = () => {
     return (
       <div>
-        <DeleteOutlined style={{ color: "rgb(26, 148, 255)", fontSize: "25px", cursor: "pointer", }} />
+        <DeleteOutlined style={{ color: "rgb(26, 148, 255)", fontSize: "25px", cursor: "pointer", }}onClick={() => setIsModalOpenDelete(true)} />
         <EditOutlined style={{ color: "rgb(26, 148, 255)", fontSize: "25px", cursor: "pointer", }} onClick={handleDetailsProduct} />
       </div>
     );
@@ -176,10 +183,20 @@ const AdminProduct = () => {
     if (isSuccess && data?.status === "OK") {
       message.success()
       handleCancel()
+      
     } else if (isError) {
       message.error()
     }
   }, [isSuccess])
+
+  useEffect(() => {
+    if (isSuccessDeleted && dataDeleted?.status === 'OK') {
+      message.success()
+      handleCancelDelete()
+    } else if (isErrorDeleted) {
+      message.error()
+    }
+  }, [isSuccessDeleted])
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -203,6 +220,17 @@ const AdminProduct = () => {
     }
   }, [isSuccessUpdated])
 
+  const handleCancelDelete = () => {
+    setIsModalOpenDelete(false)
+  }
+  const handleDeleteProduct = () => {
+    mutationDeleted.mutate({ id: rowSelected, token: user?.access_token }, {
+      onSettled: () => {
+        queryProduct.refetch()
+      }
+    })
+  }
+
   const handleCloseDrawer = () => {
     setIsOpenDrawer(false);
     setStateProductDetails({
@@ -218,7 +246,11 @@ const AdminProduct = () => {
   };
 
   const onFinish = () => {
-    mutation.mutate(stateProduct);
+    mutation.mutate(stateProduct, {
+      onSettled: () => {
+        queryProduct.refetch()
+      }
+    })
   };
 
   const handleOnchange = (e) => {
@@ -228,7 +260,6 @@ const AdminProduct = () => {
     })
   }
   const handleOnchangeDetails = (e) => {
-    console.log('check', e.target.name, e.target.value)
     setStateProductDetails({
       ...stateProductDetails,
       [e.target.name]: e.target.value,
@@ -254,9 +285,12 @@ const AdminProduct = () => {
       image: file.preview,
     })
   }
-  console.log('user', user)
   const onUpdateProduct = () => {
-    mutationUpdate.mutate({ id:rowSelected, token: user?.refresh_token, stateProductDetails })
+    mutationUpdate.mutate({ id:rowSelected, token: user?.refresh_token, ...stateProductDetails }, {
+      onSettled: () => {
+        queryProduct.refetch()
+      }
+    })
   }
 
   return (
@@ -268,7 +302,7 @@ const AdminProduct = () => {
         </Button>
       </div>
       <div style={{ marginTop: "20px" }}>
-        <TableComponent columns={columns} products={products} isPending={isPending} data={dataTable}
+        <TableComponent columns={columns} products={products} isPending={isPendingProducts} data={dataTable}
           onRow={(record, rowIndex) => {
             return {
               onClick: event => {
@@ -277,7 +311,7 @@ const AdminProduct = () => {
             };
           }} />
       </div>
-      <Modal title="Tạo Sản Phẩm" open={isModalOpen} onCancel={handleCancel} footer={null}>
+      <ModalComponent title="Tạo Sản Phẩm" open={isModalOpen} onCancel={handleCancel} footer={null}>
         <Loading isPending={isPending}>
           <Form name="basic" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} onFinish={onFinish} autoComplete="on" form={form}
           >
@@ -389,9 +423,9 @@ const AdminProduct = () => {
             </Form.Item>
           </Form>
         </Loading>
-      </Modal>
+      </ModalComponent>
       <DrawerComponent title='Chi tiết sản phẩm' isOpen={isOpenDrawer} onClose={() => setIsOpenDrawer(false)} width="70%">
-        <Loading isPending={isPendingUpdate}>
+        <Loading isPending={isPendingUpdate || isPendingUpdated}>
           <Form name="basic" 
           labelCol={{ span: 2 }} 
           wrapperCol={{ span: 18 }} 
@@ -508,6 +542,11 @@ const AdminProduct = () => {
           </Form>
         </Loading>
       </DrawerComponent>
+      <ModalComponent title="Xóa sản phẩm" open={isModalOpenDelete} onCancel={handleCancelDelete} onOk={handleDeleteProduct} >
+        <Loading isPending={isPending}>
+          <div>Bạn có chắc xóa sản phẩm này không?</div>
+        </Loading>
+      </ModalComponent>
     </div>
   );
 };
