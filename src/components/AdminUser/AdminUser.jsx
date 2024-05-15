@@ -57,6 +57,25 @@ const AdminUser = () => {
       return res
     },
   )
+  const mutationDeletedMany = useMutationHooks(
+    (data) => {
+      const {
+        token,... ids
+      } = data
+      const res = UserService.deleteManyUser(
+        ids,
+        token)
+      return res
+    },
+  )
+
+  const handleDeleteManyUsers = (ids) => {
+    mutationDeletedMany.mutate({ ids: ids, token: user?.access_token }, {
+      onSettled: () => {
+        queryUser.refetch()
+      }
+    })
+  }
 
   const getAllUsers = async () => {
     const res = await UserService.getAllUser();
@@ -101,6 +120,7 @@ const AdminUser = () => {
 
   const { data: dataUpdated, isPending: isPendingUpdated, isSuccess: isSuccessUpdated, isError: isErrorUpdated } = mutationUpdate
   const { data: dataDeleted, isPending: isPendingDeleted, isSuccess: isSuccessDeleted, isError: isErrorDeleted } = mutationDeleted
+  const { data: dataDeletedMany, isPending: isPendingDeletedMany, isSuccess: isSuccessDeletedMany, isError: isErrorDeletedMany } = mutationDeletedMany
 
 
   const queryUser = useQuery({ queryKey: ['user'], queryFn: getAllUsers })
@@ -259,6 +279,14 @@ const AdminUser = () => {
   }, [isSuccessDeleted])
 
   useEffect(() => {
+    if (isSuccessDeletedMany && dataDeletedMany?.status === 'OK') {
+      message.success()
+    } else if (isErrorDeletedMany) {
+      message.error()
+    }
+  }, [isSuccessDeletedMany])
+
+  useEffect(() => {
     if (isSuccessUpdated && dataUpdated?.status === "OK") {
       message.success()
       handleCloseDrawer()
@@ -317,7 +345,7 @@ const AdminUser = () => {
     <div>
       <WrapperHeader>Quản Lý Người Dùng</WrapperHeader>
       <div style={{ marginTop: "20px" }}>
-        <TableComponent columns={columns} users={users} isPending={isPendingUsers} data={dataTable}
+        <TableComponent handleDeleteMany ={handleDeleteManyUsers} columns={columns} users={users} isPending={isPendingUsers} data={dataTable}
           onRow={(record, rowIndex) => {
             return {
               onClick: event => {

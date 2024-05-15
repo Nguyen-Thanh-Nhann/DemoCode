@@ -94,6 +94,18 @@ const AdminProduct = () => {
       return res
     },
   )
+  const mutationDeletedMany = useMutationHooks(
+    (data) => {
+      const {
+        token,... ids
+      } = data
+      const res = ProductService.deleteManyProduct(
+        ids,
+        token)
+      return res
+    },
+  )
+  console.log('mutationDeletedMany',mutationDeletedMany)
 
   const getAllProducts = async () => {
     const res = await ProductService.getAllProduct();
@@ -136,10 +148,18 @@ const AdminProduct = () => {
   const handleDetailsProduct = () => {
     setIsOpenDrawer(true)
   }
+  const handleDeleteManyProducts = (ids) => {
+    mutationDeletedMany.mutate({ ids: ids, token: user?.access_token }, {
+      onSettled: () => {
+        queryProduct.refetch()
+      }
+    })
+  }
 
   const { data, isPending, isSuccess, isError } = mutation
   const { data: dataUpdated, isPending: isPendingUpdated, isSuccess: isSuccessUpdated, isError: isErrorUpdated } = mutationUpdate
-  const { data: dataDeleted, isLoading: isPendingDeleted, isSuccess: isSuccessDeleted, isError: isErrorDeleted } = mutationDeleted
+  const { data: dataDeleted, isPending: isPendingDeleted, isSuccess: isSuccessDeleted, isError: isErrorDeleted } = mutationDeleted
+  const { data: dataDeletedMany, isPending: isPendingDeletedMany, isSuccess: isSuccessDeletedMany, isError: isErrorDeletedMany } = mutationDeletedMany
 
   const queryProduct = useQuery({ queryKey: ['products'], queryFn: getAllProducts })
   const { data: products, isPending: isPendingProducts } = queryProduct
@@ -305,11 +325,18 @@ const AdminProduct = () => {
     if (isSuccess && data?.status === "OK") {
       message.success()
       handleCancel()
-      
     } else if (isError) {
       message.error()
     }
   }, [isSuccess])
+
+  useEffect(() => {
+    if (isSuccessDeletedMany && dataDeletedMany?.status === "OK") {
+      message.success()
+    } else if (isErrorDeletedMany) {
+      message.error()
+    }
+  }, [isSuccessDeletedMany])
 
   useEffect(() => {
     if (isSuccessDeleted && dataDeleted?.status === 'OK') {
@@ -424,7 +451,7 @@ const AdminProduct = () => {
         </Button>
       </div>
       <div style={{ marginTop: "20px" }}>
-        <TableComponent columns={columns} products={products} isPending={isPendingProducts} data={dataTable}
+        <TableComponent handleDeleteMany ={handleDeleteManyProducts} columns={columns} products={products} isPending={isPendingProducts} data={dataTable}
           onRow={(record, rowIndex) => {
             return {
               onClick: event => {
@@ -665,7 +692,7 @@ const AdminProduct = () => {
         </Loading>
       </DrawerComponent>
       <ModalComponent title="Xóa sản phẩm" open={isModalOpenDelete} onCancel={handleCancelDelete} onOk={handleDeleteProduct} >
-        <Loading isPending={isPending}>
+        <Loading isPending={isPendingDeleted}>
           <div>Bạn có chắc xóa sản phẩm này không?</div>
         </Loading>
       </ModalComponent>
