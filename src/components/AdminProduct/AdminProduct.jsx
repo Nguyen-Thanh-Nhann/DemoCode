@@ -23,8 +23,8 @@ const AdminProduct = () => {
   const [isPendingUpdate, setIsPendingUpdate]  = useState(false)
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false)
   const user = useSelector((state) => state?.user)
-  const [searchedColumn, setSearchedColumn] = useState('');
-  const searchInput = useRef(null);
+  const searchInput = useRef(null)
+
   const [stateProduct, setStateProduct] = useState({
     name: '',
     price: '',
@@ -140,7 +140,7 @@ const AdminProduct = () => {
   const { data, isPending, isSuccess, isError } = mutation
   const { data: dataUpdated, isPending: isPendingUpdated, isSuccess: isSuccessUpdated, isError: isErrorUpdated } = mutationUpdate
   const { data: dataDeleted, isLoading: isPendingDeleted, isSuccess: isSuccessDeleted, isError: isErrorDeleted } = mutationDeleted
-  console.log('dataUpdated', dataUpdated)
+
   const queryProduct = useQuery({ queryKey: ['products'], queryFn: getAllProducts })
   const { data: products, isPending: isPendingProducts } = queryProduct
   const renderAction = () => {
@@ -153,7 +153,6 @@ const AdminProduct = () => {
   }
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
-    setSearchedColumn(dataIndex);
   };
   const handleReset = (clearFilters) => {
     clearFilters();
