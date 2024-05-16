@@ -13,6 +13,7 @@ import ModalComponent from '../ModalComponent/ModalComponent'
 import { useQuery } from '@tanstack/react-query'
 import { useMutationHooks } from '../../hooks/useMutationHook'
 import { useSelector } from 'react-redux'
+import { DownloadTableExcel } from 'react-export-table-to-excel';
 
 const AdminUser = () => {
   const [isOpenDrawer, setIsOpenDrawer] = useState(false)
@@ -387,14 +388,14 @@ const AdminUser = () => {
             </Form.Item>
 
             <Form.Item
-              label="Adress"
+              label="Address"
               name="address"
               rules={[{ required: true, message: 'Hãy nhập địa chỉ!' }]}
             >
               <InputComponent value={stateUserDetails.address} onChange={handleOnchangeDetails} name="address" />
             </Form.Item>
 
-            {/* <Form.Item
+            <Form.Item
               label="Avatar"
               name="avatar"
               rules={[{ required: true, message: 'Hãy chọn hình ảnh!' }]}
@@ -411,7 +412,7 @@ const AdminUser = () => {
                   }} alt="avatar" />
                 )}
               </WrapperUploadFile>
-            </Form.Item> */}
+            </Form.Item>
 
             <Form.Item wrapperCol={{ offset: 20, span: 16 }}>
               <Button type="primary" htmlType="submit">

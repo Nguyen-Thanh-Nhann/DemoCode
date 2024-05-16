@@ -17,7 +17,7 @@ const CardComponent = (props) => {
             headStyle={{ width: '200px', height: '200px' }}
             style={{ width: 200 }}
             bodyStyle={{ padding: '10px' }}
-            cover={<img alt="example" src="https://salt.tikicdn.com/cache/750x750/ts/product/b7/ba/88/66059a54a3a139d45841d412379b1fe4.jpg.webp" />}
+            cover={<img alt="example" src={image} />}
             onClick={() =>  handleDetailsProduct(id)}
         >
             <img
