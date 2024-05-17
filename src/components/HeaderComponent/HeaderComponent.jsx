@@ -21,7 +21,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   const dispatch = useDispatch()
   const [userName, setUserName] = useState('')
   const [userAvatar, setUserAvatar] = useState('')
-  const [search,setSearch] = useState('')
+  const [search, setSearch] = useState('')
   const [isOpenPopup, setIsOpenPopup] = useState(false)
   const order = useSelector((state) => state.order)
   const [loading, setLoading] = useState(false)
