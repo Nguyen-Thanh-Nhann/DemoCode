@@ -26,10 +26,10 @@ export const routes = [
     isShowHeader: true,
   },
   {
-    path: "/:type",
+    path: '/product/:type',
     page: TypeProductPage,
-    isShowHeader: true,
-  },
+    isShowHeader: true
+},
   {
     path: "/sign-in",
     page: SignInPage,

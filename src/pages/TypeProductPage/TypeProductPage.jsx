@@ -3,6 +3,7 @@ import NavBarComponent from "../../components/NavBarComponent/NavBarComponent";
 import CardComponent from "../../components/CardComponent/CardComponent";
 import { Row, Pagination, Col } from "antd";
 import { WrapperNavbar, WrapperProducts } from "./style";
+import { convertPrice } from '../../utils'
 
 const TypeProductPage = () => {
   const onChange = () => {};

@@ -15,11 +15,10 @@ import { useDebounce } from "../../hooks/useDebounce";
 const HomePage = () => {
   const searchProduct = useSelector((state) => state?.product?.search)
   const searchDebounce = useDebounce(searchProduct, 500)
-
   const [loading, setLoading] = useState(false)
   const [limit, setLimit] = useState(6)
-  
-  const arr = ["Giá đỡ", "TU LANH", "LAPTOP"]
+  const [typeProducts, setTypeProducts] = useState([])
+  const arr = ["GIÁ ĐỠ", "DÂY SẠC", "ĐIỆN THOẠI"]
 
   const fetchProductAll = async (context) => {
     const limit = context?.queryKey && context?.queryKey[1]
@@ -29,20 +28,28 @@ const HomePage = () => {
     return res
 
   }
-
+  const fetchAllTypeProduct = async () => {
+    const res = await ProductService.getAllTypeProduct()
+    if(res?.status === 'OK') {
+      setTypeProducts(res?.data)
+    }
+  }
+  useEffect(() => {
+    fetchAllTypeProduct()
+  }, [])
   const { isPending, data: products, isPreviousData  } = useQuery({  queryKey: ['products', limit, searchDebounce] , queryFn: fetchProductAll , retry: 3, retryDelay: 1000, placeholderData: (previousData) => previousData})
 
   return (
     <Loading isPending={isPending || loading}>
       <div style={{ width:'1270px', margin:'0 auto' }}>
         <WrapperTypeProduct>
-          {arr.map((item) => {
+          {typeProducts.map((item) => {
             return <TypeProduct name={item} key={item} />;
           })}
         </WrapperTypeProduct>
       </div>
       <div className='body' style={{ width: '100%', backgroundColor: '#efefef', }}>
-        <div id="container" style={{ height: '1000px', width: '1270px', margin: '0 auto' }}>
+        <div id="container" style={{ height: '100%', width: '1270px', margin: '0 auto' }}>
         <SliderComponent arrImages={[slider1, slider2, slider3]} />
           <div
             style={{
