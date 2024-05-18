@@ -186,6 +186,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
           )}
         </Col>
       </WrapperHeader>
+      
     </div>
   );
 };

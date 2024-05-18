@@ -1,96 +1,85 @@
-import React from "react";
-import { Row, Col, Image, } from "antd";
-import {
-  WrapperStyleImageSmall,
-  WrapperStyleColImage,
-  WrapperStyleNameProduct,
-  WrapperStyleTextSell,
-  WrapperPriceProduct,
-  WrapperPriceTextProduct,
-  WrapperAddressProduct,
-  WrapperQualityProduct,
-  WrapperInputNumber,
+import React, { useState } from "react";
+import { Row, Col, Image, Rate, } from "antd";
+import {WrapperStyleImageSmall,WrapperStyleColImage,WrapperStyleNameProduct,WrapperStyleTextSell,WrapperPriceProduct,WrapperPriceTextProduct,WrapperAddressProduct,WrapperQualityProduct,WrapperInputNumber,
 } from "./style";
 import { MinusOutlined, PlusOutlined, StarFilled } from "@ant-design/icons";
-import ButtonComponent from "../ButtonComponent/ButtonComponent";
+import ButtonComponent from "../ButtonComponent/ButtonComponent"
+import imageProductSmall from '../../assets/images/imagesmall.webp'
+import * as ProductService from "../../services/ProductService";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../LoadingComponent/Loading";
+import { convertPrice } from "../../utils";
+import { useSelector } from "react-redux";
 
 
-const ProductDetailsComponent = () => {
-  const onChange = () => {};
+const ProductDetailsComponent = ({idProduct}) => {
+  const [numProduct, setNumProduct] = useState(1)
+  const onChange = (value) => { 
+    setNumProduct(Number(value))
+}
+  const user = useSelector((state) => state.user)
+  const fetchGetDetailsProduct = async (context) => {
+    const id = context?.queryKey && context?.queryKey[1]
+      if(id) {
+        const res = await ProductService.getDetailsProduct(id)
+      return res.data
+      }
+    }
+    const handleChangeCount = (type, limited) => {
+      if(type === 'increase') {
+          if(!limited) {
+              setNumProduct(numProduct + 1)
+          }
+      }else {
+          if(!limited) {
+              setNumProduct(numProduct - 1)
+          }
+      }
+  }
+  const { isPending, data: productDetails } = useQuery({  queryKey: ['products-details', idProduct] , queryFn: fetchGetDetailsProduct , enabled : !!idProduct})
   return (
-    <Row style={{ padding: "16px", background: "#fff", borderRadius: "4px" }}>
-      <Col
-        span={10}
-        style={{ borderRight: "1px solid e5e5e5", paddingRight: "8px" }}
-      >
-        <Image
-          src="https://salt.tikicdn.com/cache/750x750/ts/product/40/5e/eb/4dcee6ceebbea004a14f212db4182b18.png.webp"
-          alt="image product"
-          preview="false"
-        />
-        <Row
-          style={{
-            paddingTop: "10px",
-            gap: "5px",
-          }}
-        >
-          <WrapperStyleColImage span={4}>
-            <WrapperStyleImageSmall
-              src="https://salt.tikicdn.com/cache/100x100/ts/product/e3/67/56/a680a1070a152455bb0969833c687895.jpg.webp"
-              alt="image smail"
-              preview="false"
-            />
-          </WrapperStyleColImage>
-          <WrapperStyleColImage span={4}>
-            <WrapperStyleImageSmall
-              src="https://salt.tikicdn.com/cache/100x100/ts/product/5a/b9/fb/84555d61c7ff278192fba6ed5be2580b.jpg.webp"
-              alt="image smail"
-              preview="false"
-            />
-          </WrapperStyleColImage>
-          <WrapperStyleColImage span={4}>
-            <WrapperStyleImageSmall
-              src="https://salt.tikicdn.com/cache/100x100/ts/product/98/86/f3/9d08036fe7c885dc96265bdf14caab39.jpg.webp"
-              alt="image smail"
-              preview="false"
-            />
-          </WrapperStyleColImage>
-          <WrapperStyleColImage span={4}>
-            <WrapperStyleImageSmall
-              src="https://salt.tikicdn.com/cache/100x100/ts/product/bd/93/1b/5eb850d833f17371df41fa598cfab3be.jpg.webp"
-              alt="image smail"
-              preview="false"
-            />
-          </WrapperStyleColImage>
-        </Row>
+    <Loading isPending={isPending}>
+    <Row style={{ padding: '16px', background: '#fff', borderRadius: '4px', height:'100%' }}>
+                <Col span={10} style={{ borderRight: '1px solid #e5e5e5', paddingRight: '8px' }}>
+                    <Image src={productDetails?.image} alt="image product" preview={false} />
+                    <Row style={{ paddingTop: '10px', justifyContent: 'space-between' }}>
+                        <WrapperStyleColImage span={4} sty>
+                            <WrapperStyleImageSmall src={imageProductSmall} alt="image small" preview={false} />
+                        </WrapperStyleColImage>
+                        <WrapperStyleColImage span={4}>
+                            <WrapperStyleImageSmall src={imageProductSmall} alt="image small" preview={false} />
+                        </WrapperStyleColImage>
+
+                        <WrapperStyleColImage span={4}>
+                            <WrapperStyleImageSmall src={imageProductSmall} alt="image small" preview={false} />
+                        </WrapperStyleColImage>
+
+                        <WrapperStyleColImage span={4}>
+                            <WrapperStyleImageSmall src={imageProductSmall} alt="image small" preview={false} />
+                        </WrapperStyleColImage>
+
+                        <WrapperStyleColImage span={4}>
+                            <WrapperStyleImageSmall src={imageProductSmall} alt="image small" preview={false} />
+                        </WrapperStyleColImage>
+
+                        <WrapperStyleColImage span={4}>
+                            <WrapperStyleImageSmall src={imageProductSmall} alt="image small" preview={false} />
+                        </WrapperStyleColImage>
+
+                    </Row>
       </Col>
       <Col span={14} style={{ paddingLeft: "10px" }}>
-        <WrapperStyleNameProduct>Apple iPhone 15 Pro</WrapperStyleNameProduct>
+        <WrapperStyleNameProduct>{productDetails?.name}</WrapperStyleNameProduct>
         <div>
-          <span>4.8</span>
-          <StarFilled
-            style={{ fontSize: "12px", color: "rgb(253, 216, 54)" }}
-          />
-          <StarFilled
-            style={{ fontSize: "12px", color: "rgb(253, 216, 54)" }}
-          />
-          <StarFilled
-            style={{ fontSize: "12px", color: "rgb(253, 216, 54)" }}
-          />
-          <StarFilled
-            style={{ fontSize: "12px", color: "rgb(253, 216, 54)" }}
-          />
-          <StarFilled
-            style={{ fontSize: "12px", color: "rgb(253, 216, 54)" }}
-          />
-          <WrapperStyleTextSell>| Đã bán 343+ </WrapperStyleTextSell>
+            <Rate allowHalf defaultValue={productDetails?.rating} value={productDetails?.rating} />
+            <WrapperStyleTextSell> | Da ban 1000+</WrapperStyleTextSell>
         </div>
         <WrapperPriceProduct>
-          <WrapperPriceTextProduct>27.490.000₫</WrapperPriceTextProduct>
+          <WrapperPriceTextProduct>{convertPrice(productDetails?.price)}</WrapperPriceTextProduct>
         </WrapperPriceProduct>
         <WrapperAddressProduct>
           <span> Giao Đến </span>
-          <span className="address"> Q7,P. Phú Thuận, Hồ Chí Minh - </span>
+          <span className="address"> {user?.address} - </span>
           <span className="change-address"> Đổi địa chỉ </span>
         </WrapperAddressProduct>
         <div
@@ -103,17 +92,13 @@ const ProductDetailsComponent = () => {
         >
           <div style={{ marginBottom: "10px" }}>Số Lượng</div>
           <WrapperQualityProduct>
-            <button style={{ border: "none", background: "transparent" }}>
-              <MinusOutlined style={{ color: "#000", fontSize: "20px" }} />
-            </button>
-            <WrapperInputNumber
-              defaultValue={3}
-              onChange={onChange}
-              size="small"
-            />
-            <button style={{ border: "none", background: "transparent" }}>
-              <PlusOutlined style={{ color: "#000", fontSize: "20px" }} />
-            </button>
+          <button style={{ border: 'none', background: 'transparent', cursor: 'pointer' }} onClick={() => handleChangeCount('decrease',numProduct === 1)}>
+              <MinusOutlined style={{ color: '#000', fontSize: '20px' }} />
+          </button>
+          <WrapperInputNumber onChange={onChange} defaultValue={1} max={productDetails?.countInStock} min={1} value={numProduct} size="small" />
+          <button style={{ border: 'none', background: 'transparent', cursor: 'pointer' }} onClick={() => handleChangeCount('increase',  numProduct === productDetails?.countInStock)}>
+              <PlusOutlined style={{ color: '#000', fontSize: '20px' }} />
+          </button>
           </WrapperQualityProduct>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -145,6 +130,7 @@ const ProductDetailsComponent = () => {
         </div>
       </Col>
     </Row>
+    </Loading>
   );
 };
 

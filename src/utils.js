@@ -44,14 +44,14 @@ export function getItem(label, key, icon, children, type) {
 //     return results
 // }
 
-// export const convertPrice = (price) => {
-//     try {
-//         const result  = price?.toLocaleString().replaceAll(',', '.')
-//         return `${result} VND`
-//     } catch (error) {
-//         return null
-//     }
-// }
+export const convertPrice = (price) => {
+    try {
+        const result  = price?.toLocaleString().replaceAll(',', '.')
+        return `${result} VND`
+    } catch (error) {
+        return null
+    }
+}
 
 // export const initFacebookSDK = () => {
 //     if (window.FB) {
