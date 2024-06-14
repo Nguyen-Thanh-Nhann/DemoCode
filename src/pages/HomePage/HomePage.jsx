@@ -18,7 +18,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false)
   const [limit, setLimit] = useState(6)
   const [typeProducts, setTypeProducts] = useState([])
-  const arr = ["GIÁ ĐỠ", "DÂY SẠC", "ĐIỆN THOẠI"]
+ 
 
   const fetchProductAll = async (context) => {
     const limit = context?.queryKey && context?.queryKey[1]
