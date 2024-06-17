@@ -8,6 +8,7 @@ import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import ProductDetailsPage from "../pages/ProductDetailsPage/ProductDetailsPage";
 import ProfilePage from "../pages/Profile/ProfilePage";
 import AdminPage from "../pages/AdminPage/AdminPage";
+import OrderPage from "../pages/OrderPage/OrderPage";
 
 export const routes = [
   {
@@ -15,11 +16,11 @@ export const routes = [
     page: HomePage,
     isShowHeader: true,
   },
-  // {
-  //   path: "/order",
-  //   page: OrderPage,
-  //   isShowHeader: true,
-  // },
+  {
+    path: "/order",
+    page: OrderPage,
+    isShowHeader: true,
+  },
   {
     path: "/products",
     page: ProductsPage,

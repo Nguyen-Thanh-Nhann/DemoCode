@@ -9,15 +9,23 @@ import * as ProductService from "../../services/ProductService";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../LoadingComponent/Loading";
 import { convertPrice } from "../../utils";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { addOrderProduct } from "../../redux/slides/orderSlide";
 
 
 const ProductDetailsComponent = ({idProduct}) => {
   const [numProduct, setNumProduct] = useState(1)
+  const user = useSelector((state) => state.user)
+  const order = useSelector((state) => state.order)
+  const [errorLimitOrder,setErrorLimitOrder] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const dispatch = useDispatch()
+
   const onChange = (value) => { 
     setNumProduct(Number(value))
 }
-  const user = useSelector((state) => state.user)
   const fetchGetDetailsProduct = async (context) => {
     const id = context?.queryKey && context?.queryKey[1]
       if(id) {
@@ -37,6 +45,29 @@ const ProductDetailsComponent = ({idProduct}) => {
       }
   }
   const { isPending, data: productDetails } = useQuery({  queryKey: ['products-details', idProduct] , queryFn: fetchGetDetailsProduct , enabled : !!idProduct})
+  const handleAddOrderProduct = () => {
+        if(!user?.id) {
+            navigate('/sign-in', {state: location?.pathname})
+        }else {
+            const orderRedux = order?.orderItems?.find((item) => item.product === productDetails?._id)
+            if((orderRedux?.amount + numProduct) <= orderRedux?.countInstock || (!orderRedux && productDetails?.countInStock > 0)) {
+                dispatch(addOrderProduct({
+                    orderItem: {
+                        name: productDetails?.name,
+                        amount: numProduct,
+                        image: productDetails?.image,
+                        price: productDetails?.price,
+                        product: productDetails?._id,
+                        discount: productDetails?.discount,
+                        countInstock: productDetails?.countInStock
+                    }
+                }))
+            } else {
+                setErrorLimitOrder(true)
+            }
+        }
+    }
+
   return (
     <Loading isPending={isPending}>
     <Row style={{ padding: '16px', background: '#fff', borderRadius: '4px', height:'100%' }}>
@@ -112,6 +143,7 @@ const ProductDetailsComponent = ({idProduct}) => {
               border: "none",
               borderRadius: "4px",
             }}
+            onClick={handleAddOrderProduct}
             textButton={"Chọn Mua"}
             styleTextButton={{ color: "#fff" }}
           ></ButtonComponent>
