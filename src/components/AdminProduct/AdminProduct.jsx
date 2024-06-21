@@ -33,7 +33,7 @@ const AdminProduct = () => {
     type: '',
     countInStock: '',
     newType: '',
-    discount: '',
+    discount: ''
   })
   const [stateProduct, setStateProduct] = useState(inittial())
   const [stateProductDetails, setStateProductDetails] = useState(inittial())
@@ -48,7 +48,8 @@ const AdminProduct = () => {
         rating,
         image,
         type,
-        countInStock,discount } = data
+        countInStock,
+        discount } = data
       const res = ProductService.createProduct({
         name,
         price,
@@ -309,6 +310,14 @@ const AdminProduct = () => {
       dataIndex: 'type',
     },
     {
+      title: 'Description',
+      dataIndex: 'description',
+    },
+    {
+      title: 'Discount',
+      dataIndex: 'discount',
+    },
+    {
       title: 'Action',
       dataIndex: 'action',
       render: renderAction
@@ -550,6 +559,14 @@ const AdminProduct = () => {
             >
               <InputComponent value={stateProduct.rating} onChange={handleOnchange} name="rating" />
             </Form.Item>
+            
+            <Form.Item
+              label="Giảm Giá"
+              name="discount"
+              rules={[{ required: true, message: 'Hãy nhập giảm giá của sản phẩm' }]}
+            >
+              <InputComponent value={stateProduct.discount} onChange={handleOnchange} name="discount" />
+            </Form.Item>
             <Form.Item
               label="Hình Ảnh"
               name="image"
@@ -630,7 +647,13 @@ const AdminProduct = () => {
             >
               <InputComponent value={stateProductDetails.rating} onChange={handleOnchangeDetails} name="rating" />
             </Form.Item>
-
+            <Form.Item
+              label="Giảm Giá"
+              name="discount"
+              rules={[{ required: true, message: 'Hãy nhập giảm giá của sản phẩm' }]}
+            >
+              <InputComponent value={stateProduct.discount} onChange={handleOnchangeDetails} name="discount" />
+            </Form.Item>
             <Form.Item
               label="Hình Ảnh"
               name="image"

@@ -46,7 +46,7 @@ const CardComponent = (props) => {
                     {convertPrice(price)}
                 </span>
                 <WrapperDiscountText>
-                    - {discount || 5} %
+                    - {discount} %
                 </WrapperDiscountText>
             </WrapperPriceText>
         </WrapperCardStyle>
