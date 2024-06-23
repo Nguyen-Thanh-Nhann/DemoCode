@@ -59,3 +59,7 @@ export const getAllTypeProduct = async () => {
     const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/get-all-type`)
     return res.data
 }
+export const getRelatedProducts = async (idProduct) => {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/related/${idProduct}`);
+    return res.data;
+}

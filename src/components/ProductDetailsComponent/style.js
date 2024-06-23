@@ -76,3 +76,14 @@ export const WrapperInputNumber = styled(InputNumber)`
     }
   }
 `
+export const WrapperDescriptionProduct = styled.div`
+  span.title {
+    padding: 10px 0;
+    font-weight: 500;
+  }
+  span.description {
+    padding: 10px 0;
+    font-size: 16px;
+    margin-left: 8px;
+  }
+`
