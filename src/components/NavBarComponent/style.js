@@ -2,8 +2,10 @@ import styled from "styled-components";
 
 export const WrapperLableText = styled.h4`
   color: rgb(56, 56, 61);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
+  margin-top: 0px;
+  margin-left: 20px;
 `;
 
 export const WrapperTextValue = styled.span`
@@ -14,9 +16,9 @@ export const WrapperTextValue = styled.span`
 
 export const WrapperContent = styled.div`
   display: flex;
-  //align-items: center;
+  align-items: center;
   flex-direction: column;
-  gap: 15px;
+  gap: 30px;
 `;
 
 export const WrapperTextPrice = styled.div`

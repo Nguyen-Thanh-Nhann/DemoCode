@@ -1,19 +1,38 @@
 import React from "react";
-import {
-  WrapperContent,
-  WrapperLableText,
-  WrapperTextValue,
-  WrapperTextPrice,
-} from "./style";
-import { Checkbox, Col, Rate, Row } from "antd";
-
+import { WrapperContent, WrapperLableText, WrapperTextPrice } from "./style";
+import TypeProduct from "../../components/TypeProduct/TypeProduct";
+import { Checkbox, Rate } from "antd";
+import "./style.css";
 const NavBarComponent = () => {
   const onChange = () => {};
+
   const renderContent = (type, options) => {
     switch (type) {
       case "text":
-        return options.map((option) => {
-          return <WrapperTextValue>{option}</WrapperTextValue>;
+        return options.map((option, index) => {
+          const images = [
+            "https://salt.tikicdn.com/cache/100x100/ts/category/54/c0/ff/fe98a4afa2d3e5142dc8096addc4e40b.png.webp",
+            "https://salt.tikicdn.com/cache/100x100/ts/category/8b/d4/a8/5924758b5c36f3b1c43b6843f52d6dd2.png.webp",
+            "https://salt.tikicdn.com/cache/100x100/ts/category/92/b5/c0/3ffdb7dbfafd5f8330783e1df20747f6.png.webp",
+            "https://salt.tikicdn.com/cache/100x100/ts/category/2d/7c/45/e4976f3fa4061ab310c11d2a1b759e5b.png.webp",
+            "https://salt.tikicdn.com/cache/100x100/ts/category/61/d4/ea/e6ea3ffc1fcde3b6224d2bb691ea16a2.png.webp",
+            "https://salt.tikicdn.com/cache/100x100/ts/category/61/d4/ea/e6ea3ffc1fcde3b6224d2bb691ea16a2.png.webp",
+            "https://salt.tikicdn.com/cache/100x100/ts/category/61/d4/ea/e6ea3ffc1fcde3b6224d2bb691ea16a2.png.webp",
+          ];
+          return (
+            <div
+              className="category-item"
+              style={{ display: "flex", alignItems: "center" }}
+              key={option}
+            >
+              <img
+                src={images[index]}
+                alt={option}
+                style={{ width: "32px", height: "32px", marginRight: "10px" }}
+              />
+              <TypeProduct name={option} />
+            </div>
+          );
         });
       case "checkbox":
         return (
@@ -28,7 +47,11 @@ const NavBarComponent = () => {
           >
             {options.map((option) => {
               return (
-                <Checkbox style={{ marginLeft: 0 }} value={option.value}>
+                <Checkbox
+                  style={{ marginLeft: 0 }}
+                  value={option.value}
+                  key={option.value}
+                >
                   {option.label}
                 </Checkbox>
               );
@@ -38,33 +61,41 @@ const NavBarComponent = () => {
       case "star":
         return options.map((option) => {
           return (
-            <div style={{ dispaly: "flex" }}>
+            <div style={{ display: "flex" }} key={option}>
               <Rate
                 style={{ fontSize: "12px" }}
                 disabled
                 defaultValue={option}
               />
-              <span> {`tu ${option}  sao`}</span>
+              <span> {`từ ${option} sao`}</span>
             </div>
           );
         });
       case "price":
         return options.map((option) => {
-          return <WrapperTextPrice>{option}</WrapperTextPrice>;
+          return <WrapperTextPrice key={option}>{option}</WrapperTextPrice>;
         });
-
       default:
         return {};
     }
   };
 
   return (
-    <div>
-      <WrapperLableText>Lable</WrapperLableText>
+    <div style={{ backgroundColor: "rgb(255, 255, 255)", marginRight: "15px" }}>
+      <WrapperLableText>Danh mục sản phẩm</WrapperLableText>
       <WrapperContent>
-        {renderContent("text", ["Tu lanh", "TV", "MAYGIAT"])}
+        <div className="category">
+          {renderContent("text", [
+            "Dây sạc",
+            "Giá đỡ",
+            "Kính Cường Lực",
+            "Tai Nghe",
+            "Ốp Lưng",
+            "TIVI",
+          ])}
+        </div>
       </WrapperContent>
-      <WrapperContent>
+      {/* <WrapperContent>
         {renderContent("checkbox", [
           { value: "a", label: "A" },
           { value: "b", label: "B" },
@@ -73,7 +104,7 @@ const NavBarComponent = () => {
       <WrapperContent>{renderContent("star", [3, 4, 5])}</WrapperContent>
       <WrapperContent>
         {renderContent("price", ["dưới 40.000", "trên 100.000"])}
-      </WrapperContent>
+      </WrapperContent> */}
     </div>
   );
 };
