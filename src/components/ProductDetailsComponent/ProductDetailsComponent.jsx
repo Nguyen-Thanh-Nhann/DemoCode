@@ -183,7 +183,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
         </Col>
         </Row>
       <Row style={{ padding: '16px', background: '#fff', borderRadius: '4px', marginTop: '16px' }}>
-        <h2>Sản phẩm gợi ý</h2>
+        <h2>Sản phẩm tương tự</h2>
         {isRelatedLoading ? (
           <Loading />
         ) : (

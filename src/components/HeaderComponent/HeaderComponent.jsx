@@ -1,11 +1,19 @@
 import React from "react";
 import { Badge, Col } from "antd";
-import {WrapperHeader,WrapperTextHeader,WrapperHeaderAccount,Span,WrapperContentPopup,
+import {
+  WrapperHeader,
+  WrapperTextHeader,
+  WrapperHeaderAccount,
+  Span,
+  WrapperContentPopup,
 } from "./style";
 import { useState } from "react";
 import { Popover } from "antd";
 import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
-import {UserOutlined,CaretDownOutlined,ShoppingCartOutlined,
+import {
+  UserOutlined,
+  CaretDownOutlined,
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +22,7 @@ import { resetUser } from "../../redux/slides/userSlide";
 import Loading from "../LoadingComponent/Loading";
 import { searchProduct } from "../../redux/slides/productSlide";
 import { useEffect } from "react";
+import logoImage from "../../assets/images/logo-store-2.png";
 
 const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   const navigate = useNavigate();
@@ -106,7 +115,9 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
             onClick={() => navigate("/")}
             style={{ cursor: "pointer" }}
           >
-            NHÂN TÀI SHOP
+            <div style={{ height: "50px", width: "160px" }}>
+              <img src={logoImage} alt="Logo" />
+            </div>
           </WrapperTextHeader>
         </Col>
         {!isHiddenSearch && (
@@ -186,7 +197,6 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
           )}
         </Col>
       </WrapperHeader>
-      
     </div>
   );
 };
