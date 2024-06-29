@@ -1,5 +1,5 @@
 import React from "react";
-import { WrapperContent, WrapperLableText, WrapperTextPrice } from "./style";
+import { WrapperContent, WrapperLabelText, WrapperTextPrice } from "./style";
 import TypeProductNavbar from "../TypeProductNavbar/TypeProductNavbar";
 import { Checkbox, Rate } from "antd";
 import "./style.css";
@@ -68,7 +68,7 @@ const NavBarComponent = () => {
 
   return (
     <div style={{ backgroundColor: "rgb(255, 255, 255)", marginRight: "15px" }}>
-      <WrapperLableText>Danh mục sản phẩm</WrapperLableText>
+      <WrapperLabelText>Danh mục sản phẩm</WrapperLabelText>
       <WrapperContent>
         <div className="category">
           {renderContent("text", [
@@ -81,16 +81,6 @@ const NavBarComponent = () => {
           ])}
         </div>
       </WrapperContent>
-      {/* <WrapperContent>
-        {renderContent("checkbox", [
-          { value: "a", label: "A" },
-          { value: "b", label: "B" },
-        ])}
-      </WrapperContent>
-      <WrapperContent>{renderContent("star", [3, 4, 5])}</WrapperContent>
-      <WrapperContent>
-        {renderContent("price", ["dưới 40.000", "trên 100.000"])}
-      </WrapperContent> */}
     </div>
   );
 };

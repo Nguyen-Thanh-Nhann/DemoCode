@@ -97,36 +97,37 @@ const OrderPage = () => {
 
   const priceMemo = useMemo(() => {
     const result = order?.orderItemsSelected?.reduce((total, cur) => {
-      return total + ((cur.price * cur.amount))
-    },0)
-    return result
-  },[order])
+      return total + (cur.price * cur.amount);
+    }, 0);
+    return result;
+  }, [order])
+  
 
   const priceDiscountMemo = useMemo(() => {
     const result = order?.orderItemsSelected?.reduce((total, cur) => {
-      const totalDiscount = cur.discount ? cur.discount : 0
-      return total + (priceMemo * (totalDiscount  * cur.amount) / 100)
-    },0)
-    if(Number(result)){
-      return result
+      const totalDiscount = cur.discount ? cur.discount : 0;
+      return total + ((cur.price * cur.amount) * totalDiscount / 100);
+    }, 0);
+    if (Number(result)) {
+      return result;
     }
-    return 0
-  },[order])
+    return 0;
+  }, [order])
 
   const diliveryPriceMemo = useMemo(() => {
-    if(priceMemo >= 20000 && priceMemo < 500000){
-      return 10000
-    }else if(priceMemo >= 500000 || order?.orderItemsSelected?.length === 0) {
-      return 0
+    if (priceMemo >= 20000 && priceMemo < 500000) {
+      return 10000;
+    } else if (priceMemo >= 500000 || order?.orderItemsSelected?.length === 0) {
+      return 0;
     } else {
-      return 20000
+      return 20000;
     }
-  },[priceMemo])
+  }, [priceMemo]);  
 
   const totalPriceMemo = useMemo(() => {
-    return Number(priceMemo) - Number(priceDiscountMemo) + Number(diliveryPriceMemo)
-  },[priceMemo,priceDiscountMemo, diliveryPriceMemo])
-
+    return Number(priceMemo) - Number(priceDiscountMemo) + Number(diliveryPriceMemo);
+  }, [priceMemo, priceDiscountMemo, diliveryPriceMemo]);
+  
   const handleRemoveAllOrder = () => {
     if(listChecked?.length > 1){
       dispatch(removeAllOrderProduct({listChecked}))
